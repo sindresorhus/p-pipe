@@ -31,6 +31,8 @@ pipeline('❤️').then(console.log);
 
 The `input` functions are applied from left to right.
 
+You can also specify an array as the first argument instead of multiple function arguments. Mostly only useful if you have to support Node.js 4. With Node.js 6 and above you can just use spread syntax.
+
 #### input
 
 Type: `Function`

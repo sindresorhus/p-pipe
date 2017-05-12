@@ -1,5 +1,5 @@
 import test from 'ava';
-import m from './';
+import m from '.';
 
 const addUnicorn = str => Promise.resolve(`${str} Unicorn`);
 const addRainbow = str => Promise.resolve(`${str} Rainbow`);
@@ -14,4 +14,7 @@ test(async t => {
 
 	const mixed = m(addNonPromise, addUnicorn, addRainbow);
 	t.is(await mixed('❤️'), '❤️ Foo Unicorn Rainbow');
+
+	const array = m([addUnicorn, addRainbow]);
+	t.is(await array('❤️'), '❤️ Unicorn Rainbow');
 });
