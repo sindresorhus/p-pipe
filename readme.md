@@ -6,7 +6,7 @@
 ## Install
 
 ```
-$ npm install --save p-pipe
+$ npm install p-pipe
 ```
 
 
