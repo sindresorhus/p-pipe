@@ -1,11 +1,11 @@
 'use strict';
 
-module.exports = (...inputs) => {
-	if (inputs.length === 0) {
+module.exports = (...input) => {
+	if (input.length === 0) {
 		return Promise.reject(new Error('Expected at least one argument'));
 	}
 
-	const iterator = inputs[Symbol.iterator]();
+	const iterator = input[Symbol.iterator]();
 
 	const loop = async current => {
 		const {done, value} = iterator.next();
