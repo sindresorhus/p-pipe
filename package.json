@@ -36,6 +36,7 @@
   ],
   "devDependencies": {
     "ava": "*",
+    "sinon": "*",
     "xo": "*"
   }
 }
