@@ -52,3 +52,8 @@ test('immediately stops on error', async t => {
 	t.true(two.called);
 	t.false(three.called);
 });
+
+test('requires at least one input', t => {
+	const error = t.throws(() => m(), Error);
+	t.is(error.message, 'Expected at least one argument');
+});

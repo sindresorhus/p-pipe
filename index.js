@@ -2,7 +2,7 @@
 
 module.exports = (...input) => {
 	if (input.length === 0) {
-		return Promise.reject(new Error('Expected at least one argument'));
+		throw new Error('Expected at least one argument');
 	}
 
 	const iterator = input[Symbol.iterator]();
