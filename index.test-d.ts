@@ -57,6 +57,6 @@ const asResult = async <T>(result: T) => ({result});
 const either = async (number: number) => number > 2 ? number : '🤪';
 const count = (number: number) => [...Array(number).keys()];
 
-expectType<{ result: string }>(await pipe(sq, toFixed, asResult)(2));
-expectType<{ result: number | string }>(await pipe(sq, either, asResult)(2));
+expectType<{result: string}>(await pipe(sq, toFixed, asResult)(2));
+expectType<{result: number | string}>(await pipe(sq, either, asResult)(2));
 expectType<number[]>(await pipe(sq, count)(2));
