@@ -1,44 +1,44 @@
 {
-  "name": "p-pipe",
-  "version": "1.2.0",
-  "description": "Compose promise-returning & async functions into a reusable pipeline",
-  "license": "MIT",
-  "repository": "sindresorhus/p-pipe",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=8"
-  },
-  "scripts": {
-    "test": "xo && ava && tsd-check"
-  },
-  "files": [
-    "index.js",
-    "index.d.ts"
-  ],
-  "keywords": [
-    "promise",
-    "pipe",
-    "pipeline",
-    "compose",
-    "composition",
-    "combine",
-    "flow",
-    "serial",
-    "functions",
-    "reusable",
-    "async",
-    "await",
-    "promises",
-    "bluebird"
-  ],
-  "devDependencies": {
-    "ava": "*",
-    "sinon": "^7.2.3",
-    "tsd-check": "^0.3.0",
-    "xo": "*"
-  }
+	"name": "p-pipe",
+	"version": "1.2.0",
+	"description": "Compose promise-returning & async functions into a reusable pipeline",
+	"license": "MIT",
+	"repository": "sindresorhus/p-pipe",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=8"
+	},
+	"scripts": {
+		"test": "xo && ava && tsd-check"
+	},
+	"files": [
+		"index.js",
+		"index.d.ts"
+	],
+	"keywords": [
+		"promise",
+		"pipe",
+		"pipeline",
+		"compose",
+		"composition",
+		"combine",
+		"flow",
+		"serial",
+		"functions",
+		"reusable",
+		"async",
+		"await",
+		"promises",
+		"bluebird"
+	],
+	"devDependencies": {
+		"ava": "^1.2.0",
+		"sinon": "^7.2.3",
+		"tsd-check": "^0.3.0",
+		"xo": "^0.24.0"
+	}
 }

@@ -1,28 +1,28 @@
 import test from 'ava';
 import sinon from 'sinon';
-import m from '.';
+import pPipe from '.';
 
-const addUnicorn = async str => `${str} Unicorn`;
-const addRainbow = str => Promise.resolve(`${str} Rainbow`);
-const addNonPromise = str => `${str} Foo`;
+const addUnicorn = async string => `${string} Unicorn`;
+const addRainbow = string => Promise.resolve(`${string} Rainbow`);
+const addNonPromise = string => `${string} Foo`;
 
-test('p-pipe', async t => {
-	const single = m(addUnicorn);
+test('main', async t => {
+	const single = pPipe(addUnicorn);
 	t.is(await single('❤️'), '❤️ Unicorn');
 
-	const multi = m(addUnicorn, addRainbow);
+	const multi = pPipe(addUnicorn, addRainbow);
 	t.is(await multi('❤️'), '❤️ Unicorn Rainbow');
 
-	const mixed = m(addNonPromise, addUnicorn, addRainbow);
+	const mixed = pPipe(addNonPromise, addUnicorn, addRainbow);
 	t.is(await mixed('❤️'), '❤️ Foo Unicorn Rainbow');
 
-	const array = m(...[addUnicorn, addRainbow]);
+	const array = pPipe(...[addUnicorn, addRainbow]);
 	t.is(await array('❤️'), '❤️ Unicorn Rainbow');
 });
 
 test('is lazy', async t => {
 	const spy = sinon.spy();
-	const fn = m(spy);
+	const fn = pPipe(spy);
 
 	t.false(spy.called);
 
@@ -36,8 +36,8 @@ test('throws', async t => {
 		throw new Error('💔');
 	};
 
-	const fn = async () => m(whoops)('🧐');
-	await t.throwsAsync(fn, Error, '💔');
+	const fn = async () => pPipe(whoops)('🧐');
+	await t.throwsAsync(fn, '💔');
 });
 
 test('immediately stops on error', async t => {
@@ -45,7 +45,7 @@ test('immediately stops on error', async t => {
 	const two = sinon.stub().throws('😭');
 	const three = sinon.spy();
 
-	const fn = async () => m(one, two, three)('🧐');
+	const fn = async () => pPipe(one, two, three)('🧐');
 	await t.throwsAsync(fn);
 
 	t.true(one.called);
@@ -54,6 +54,7 @@ test('immediately stops on error', async t => {
 });
 
 test('requires at least one input', t => {
-	const error = t.throws(() => m(), Error);
-	t.is(error.message, 'Expected at least one argument');
+	t.throws(() => {
+		pPipe();
+	}, 'Expected at least one argument');
 });

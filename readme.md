@@ -15,19 +15,21 @@ $ npm install p-pipe
 ```js
 const pPipe = require('p-pipe');
 
-const addUnicorn = str => Promise.resolve(`${str} Unicorn`);
-const addRainbow = str => Promise.resolve(`${str} Rainbow`);
+const addUnicorn = async string => `${string} Unicorn`;
+const addRainbow = async string => `${string} Rainbow`;
 
 const pipeline = pPipe(addUnicorn, addRainbow);
 
-pipeline('❤️').then(console.log);
-//=> '❤️ Unicorn Rainbow'
+(async () => {
+	console.log(await pipeline('❤️'));
+	//=> '❤️ Unicorn Rainbow'
+})();
 ```
 
 
 ## API
 
-### pPipe(input, …)
+### pPipe(input…)
 
 The `input` functions are applied from left to right.
 
