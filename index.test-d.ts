@@ -52,11 +52,11 @@ expectType<string>(await pipe(ternary, identity, identity, identity, identity, i
 expectType<unknown>(await pipe(ternary, identity, identity, identity, identity, identity, identity, identity, identity, identity)('❤️', 12, false));
 
 // "Complex" examples
-const sq = (number: number) => number ** 2;
+const byPowerOfTwo = (number: number) => number ** 2;
 const asResult = async <T>(result: T) => ({result});
 const either = async (number: number) => number > 2 ? number : '🤪';
 const count = (number: number) => [...Array(number).keys()];
 
-expectType<{result: string}>(await pipe(sq, toFixed, asResult)(2));
-expectType<{result: number | string}>(await pipe(sq, either, asResult)(2));
-expectType<number[]>(await pipe(sq, count)(2));
+expectType<{result: string}>(await pipe(byPowerOfTwo, toFixed, asResult)(2));
+expectType<{result: number | string}>(await pipe(byPowerOfTwo, either, asResult)(2));
+expectType<number[]>(await pipe(byPowerOfTwo, count)(2));
