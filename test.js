@@ -58,3 +58,10 @@ test('requires at least one input', t => {
 		pPipe();
 	}, 'Expected at least one argument');
 });
+
+test('reuse pipe', async t => {
+	const task = pPipe(addUnicorn);
+
+	t.is(await task('❤️'), '❤️ Unicorn');
+	t.is(await task('❤️'), '❤️ Unicorn');
+});
