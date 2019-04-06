@@ -1,43 +1,152 @@
-/**
- * Note about the naming of generics:
- *
- * - `T`: Use when there is only one generic input parameter.
- * - `R`: End result of the function / pipe.
- * - `R<number>`: Result of the nth function inside the pipe that is passed to the (n+1)-th function.
- */
+declare namespace pPipe {
+	type UnaryFunction<ValueType, ReturnType> = (
+		value: ValueType
+	) => ReturnType | PromiseLike<ReturnType>;
+
+	type Pipeline<ValueType, ReturnType> = (
+		value: ValueType
+	) => Promise<ReturnType>;
+}
 
 /**
- * Function which accepts one parameter. Expected to return a `Promise` or value.
- *
- * @param value - First parameter.
- */
-export type UnaryFunction<T, R> = (value: T) => R | PromiseLike<R>;
+Compose promise-returning & async functions into a reusable pipeline.
 
-/**
- * Generic async `function` which can infer its parmeters. Expected to return a `Promise`.
- *
- * @param args - Input parameters.
- */
-export type Pipeline<T extends unknown[], R> = (...args: T) => Promise<R>;
+@param ...input - Iterated over sequentially when returned `function` is called.
+@returns The `input` functions are applied from left to right.
 
-/**
- * Returns an async `function` which accepts the same parameters as the first `function` of `input`.
- * When the returned `function` is executed the `input` is sequentially iterated until one of the
- * inputs throws or the last input is fulfilled.
- *
- * @param input - Iterated over sequentially when returned `function` is called.
- */
-declare function pipe<T extends unknown[], R>(f1: (...args: T) => R | PromiseLike<R>): Pipeline<T, R>;
-declare function pipe<T extends unknown[], R1, R>(f1: (...args: T) => R1 | PromiseLike<R1>, f2: UnaryFunction<R1, R>): Pipeline<T, R>;
-declare function pipe<T extends unknown[], R1, R2, R>(f1: (...args: T) => R1 | PromiseLike<R1>, f2: UnaryFunction<R1, R2>, f3: UnaryFunction<R2, R>): Pipeline<T, R>;
-declare function pipe<T extends unknown[], R1, R2, R3, R>(f1: (...args: T) => R1 | PromiseLike<R1>, f2: UnaryFunction<R1, R2>, f3: UnaryFunction<R2, R3>, f4: UnaryFunction<R3, R>): Pipeline<T, R>;
-declare function pipe<T extends unknown[], R1, R2, R3, R4, R>(f1: (...args: T) => R1 | PromiseLike<R1>, f2: UnaryFunction<R1, R2>, f3: UnaryFunction<R2, R3>, f4: UnaryFunction<R3, R4>, f5: UnaryFunction<R4, R>): Pipeline<T, R>;
-declare function pipe<T extends unknown[], R1, R2, R3, R4, R5, R>(f1: (...args: T) => R1 | PromiseLike<R1>, f2: UnaryFunction<R1, R2>, f3: UnaryFunction<R2, R3>, f4: UnaryFunction<R3, R4>, f5: UnaryFunction<R4, R5>, f6: UnaryFunction<R5, R>): Pipeline<T, R>;
-declare function pipe<T extends unknown[], R1, R2, R3, R4, R5, R6, R>(f1: (...args: T) => R1 | PromiseLike<R1>, f2: UnaryFunction<R1, R2>, f3: UnaryFunction<R2, R3>, f4: UnaryFunction<R3, R4>, f5: UnaryFunction<R4, R5>, f6: UnaryFunction<R5, R6>, f7: UnaryFunction<R6, R>): Pipeline<T, R>;
-declare function pipe<T extends unknown[], R1, R2, R3, R4, R5, R6, R7, R>(f1: (...args: T) => R1 | PromiseLike<R1>, f2: UnaryFunction<R1, R2>, f3: UnaryFunction<R2, R3>, f4: UnaryFunction<R3, R4>, f5: UnaryFunction<R4, R5>, f6: UnaryFunction<R5, R6>, f7: UnaryFunction<R6, R7>, f8: UnaryFunction<R7, R>): Pipeline<T, R>;
-declare function pipe<T extends unknown[], R1, R2, R3, R4, R5, R6, R7, R8, R>(f1: (...args: T) => R1 | PromiseLike<R1>, f2: UnaryFunction<R1, R2>, f3: UnaryFunction<R2, R3>, f4: UnaryFunction<R3, R4>, f5: UnaryFunction<R4, R5>, f6: UnaryFunction<R5, R6>, f7: UnaryFunction<R6, R7>, f8: UnaryFunction<R7, R8>, f9: UnaryFunction<R8, R>): Pipeline<T, R>;
+@example
+```
+import pPipe = require('p-pipe');
+
+const addUnicorn = async string => `${string} Unicorn`;
+const addRainbow = async string => `${string} Rainbow`;
+
+const pipeline = pPipe(addUnicorn, addRainbow);
+
+(async () => {
+	console.log(await pipeline('❤️'));
+	//=> '❤️ Unicorn Rainbow'
+})();
+```
+*/
+declare function pPipe<ValueType, ReturnType>(
+	f1: pPipe.UnaryFunction<ValueType, ReturnType>
+): pPipe.Pipeline<ValueType, ReturnType>;
+declare function pPipe<ValueType, ResultValue1, ReturnType>(
+	f1: pPipe.UnaryFunction<ValueType, ResultValue1>,
+	f2: pPipe.UnaryFunction<ResultValue1, ReturnType>
+): pPipe.Pipeline<ValueType, ReturnType>;
+declare function pPipe<ValueType, ResultValue1, ResultValue2, ReturnType>(
+	f1: pPipe.UnaryFunction<ValueType, ResultValue1>,
+	f2: pPipe.UnaryFunction<ResultValue1, ResultValue2>,
+	f3: pPipe.UnaryFunction<ResultValue2, ReturnType>
+): pPipe.Pipeline<ValueType, ReturnType>;
+declare function pPipe<
+	ValueType,
+	ResultValue1,
+	ResultValue2,
+	ResultValue3,
+	ReturnType
+>(
+	f1: pPipe.UnaryFunction<ValueType, ResultValue1>,
+	f2: pPipe.UnaryFunction<ResultValue1, ResultValue2>,
+	f3: pPipe.UnaryFunction<ResultValue2, ResultValue3>,
+	f4: pPipe.UnaryFunction<ResultValue3, ReturnType>
+): pPipe.Pipeline<ValueType, ReturnType>;
+declare function pPipe<
+	ValueType,
+	ResultValue1,
+	ResultValue2,
+	ResultValue3,
+	ResultValue4,
+	ReturnType
+>(
+	f1: pPipe.UnaryFunction<ValueType, ResultValue1>,
+	f2: pPipe.UnaryFunction<ResultValue1, ResultValue2>,
+	f3: pPipe.UnaryFunction<ResultValue2, ResultValue3>,
+	f4: pPipe.UnaryFunction<ResultValue3, ResultValue4>,
+	f5: pPipe.UnaryFunction<ResultValue4, ReturnType>
+): pPipe.Pipeline<ValueType, ReturnType>;
+declare function pPipe<
+	ValueType,
+	ResultValue1,
+	ResultValue2,
+	ResultValue3,
+	ResultValue4,
+	ResultValue5,
+	ReturnType
+>(
+	f1: pPipe.UnaryFunction<ValueType, ResultValue1>,
+	f2: pPipe.UnaryFunction<ResultValue1, ResultValue2>,
+	f3: pPipe.UnaryFunction<ResultValue2, ResultValue3>,
+	f4: pPipe.UnaryFunction<ResultValue3, ResultValue4>,
+	f5: pPipe.UnaryFunction<ResultValue4, ResultValue5>,
+	f6: pPipe.UnaryFunction<ResultValue5, ReturnType>
+): pPipe.Pipeline<ValueType, ReturnType>;
+declare function pPipe<
+	ValueType,
+	ResultValue1,
+	ResultValue2,
+	ResultValue3,
+	ResultValue4,
+	ResultValue5,
+	ResultValue6,
+	ReturnType
+>(
+	f1: pPipe.UnaryFunction<ValueType, ResultValue1>,
+	f2: pPipe.UnaryFunction<ResultValue1, ResultValue2>,
+	f3: pPipe.UnaryFunction<ResultValue2, ResultValue3>,
+	f4: pPipe.UnaryFunction<ResultValue3, ResultValue4>,
+	f5: pPipe.UnaryFunction<ResultValue4, ResultValue5>,
+	f6: pPipe.UnaryFunction<ResultValue5, ResultValue6>,
+	f7: pPipe.UnaryFunction<ResultValue6, ReturnType>
+): pPipe.Pipeline<ValueType, ReturnType>;
+declare function pPipe<
+	ValueType,
+	ResultValue1,
+	ResultValue2,
+	ResultValue3,
+	ResultValue4,
+	ResultValue5,
+	ResultValue6,
+	ResultValue7,
+	ReturnType
+>(
+	f1: pPipe.UnaryFunction<ValueType, ResultValue1>,
+	f2: pPipe.UnaryFunction<ResultValue1, ResultValue2>,
+	f3: pPipe.UnaryFunction<ResultValue2, ResultValue3>,
+	f4: pPipe.UnaryFunction<ResultValue3, ResultValue4>,
+	f5: pPipe.UnaryFunction<ResultValue4, ResultValue5>,
+	f6: pPipe.UnaryFunction<ResultValue5, ResultValue6>,
+	f7: pPipe.UnaryFunction<ResultValue6, ResultValue7>,
+	f8: pPipe.UnaryFunction<ResultValue7, ReturnType>
+): pPipe.Pipeline<ValueType, ReturnType>;
+declare function pPipe<
+	ValueType,
+	ResultValue1,
+	ResultValue2,
+	ResultValue3,
+	ResultValue4,
+	ResultValue5,
+	ResultValue6,
+	ResultValue7,
+	ResultValue8,
+	ReturnType
+>(
+	f1: pPipe.UnaryFunction<ValueType, ResultValue1>,
+	f2: pPipe.UnaryFunction<ResultValue1, ResultValue2>,
+	f3: pPipe.UnaryFunction<ResultValue2, ResultValue3>,
+	f4: pPipe.UnaryFunction<ResultValue3, ResultValue4>,
+	f5: pPipe.UnaryFunction<ResultValue4, ResultValue5>,
+	f6: pPipe.UnaryFunction<ResultValue5, ResultValue6>,
+	f7: pPipe.UnaryFunction<ResultValue6, ResultValue7>,
+	f8: pPipe.UnaryFunction<ResultValue7, ResultValue8>,
+	f9: pPipe.UnaryFunction<ResultValue8, ReturnType>
+): pPipe.Pipeline<ValueType, ReturnType>;
 
 // Fallbacks if more than 9 functions are passed as input (not type-safe).
-declare function pipe(...functions:((...args: unknown[]) => unknown | PromiseLike<unknown>)[]): Pipeline<unknown[], unknown>;
+declare function pPipe(
+	...functions: (pPipe.UnaryFunction<any, unknown>)[]
+): pPipe.Pipeline<unknown, unknown>;
 
-export default pipe;
+export = pPipe;
