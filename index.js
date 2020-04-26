@@ -5,13 +5,14 @@ module.exports = (...functions) => {
 		throw new Error('Expected at least one argument');
 	}
 
-	return async input => {
-		let currentValue = input;
+	return input => {
+		let promise = Promise.resolve(input);
 
 		for (const fn of functions) {
-			currentValue = await fn(currentValue); // eslint-disable-line no-await-in-loop
+			// eslint-disable-next-line promise/prefer-await-to-then
+			promise = promise.then(fn);
 		}
 
-		return currentValue;
+		return promise;
 	};
 };
