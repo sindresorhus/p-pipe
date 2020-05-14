@@ -5,6 +5,7 @@ import pPipe from '.';
 const addUnicorn = async string => `${string} Unicorn`;
 const addRainbow = string => Promise.resolve(`${string} Rainbow`);
 const addNonPromise = string => `${string} Foo`;
+const fetchString = () => 'without input';
 
 test('main', async t => {
 	const single = pPipe(addUnicorn);
@@ -64,4 +65,10 @@ test('reuse pipe', async t => {
 
 	t.is(await task('❤️'), '❤️ Unicorn');
 	t.is(await task('❤️'), '❤️ Unicorn');
+});
+
+test('calls function without input', async t => {
+	const withoutInput = pPipe(fetchString, addUnicorn);
+
+	t.is(await withoutInput(), 'without input Unicorn');
 });
