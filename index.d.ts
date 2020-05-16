@@ -4,7 +4,7 @@ declare namespace pPipe {
 	) => ReturnType | PromiseLike<ReturnType>;
 
 	type Pipeline<ValueType, ReturnType> = (
-		value: ValueType
+		value?: ValueType
 	) => Promise<ReturnType>;
 }
 
