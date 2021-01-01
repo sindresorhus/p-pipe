@@ -1,4 +1,4 @@
-# p-pipe [![Build Status](https://travis-ci.com/sindresorhus/p-pipe.svg?branch=master)](https://travis-ci.com/sindresorhus/p-pipe)
+# p-pipe
 
 > Compose promise-returning & async functions into a reusable pipeline
 
