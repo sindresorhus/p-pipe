@@ -1,11 +1,11 @@
 import {expectType} from 'tsd';
-import pPipe = require('.');
+import pPipe from './index.js';
 
 const fn = async (string: string) => `${string} Unicorn`;
 const noInput = async () => 'called without input';
 
 const identity = <T>(value: T) => value;
-const toNumber = (string: string) => parseInt(string);
+const toNumber = (string: string) => Number.parseInt(string, 10);
 const toFixed = (number: number) => number.toFixed(2);
 
 expectType<Promise<string>>(pPipe(fn)('❤️'));
@@ -57,7 +57,7 @@ expectType<Promise<string>>(
 	)()
 );
 
-expectType<unknown>(
+expectType<Promise<unknown>>(
 	pPipe(
 		fn,
 		identity,
@@ -71,7 +71,7 @@ expectType<unknown>(
 		identity
 	)('❤️')
 );
-expectType<unknown>(
+expectType<Promise<string>>(
 	pPipe(
 		noInput,
 		identity,
@@ -83,7 +83,7 @@ expectType<unknown>(
 const byPowerOfTwo = (number: number) => number ** 2;
 const asResult = async <T>(result: T) => ({result});
 const either = async (number: number) => (number > 2 ? number : '🤪');
-const count = (number: number) => [...Array(number).keys()];
+const count = (number: number) => [...Array(number).keys()]; // eslint-disable-line unicorn/new-for-builtins
 const fetchNumber = async () => 2;
 
 expectType<Promise<{result: string}>>(

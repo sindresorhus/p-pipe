@@ -11,17 +11,15 @@ $ npm install p-pipe
 ## Usage
 
 ```js
-const pPipe = require('p-pipe');
+import pPipe from 'p-pipe';
 
 const addUnicorn = async string => `${string} Unicorn`;
 const addRainbow = async string => `${string} Rainbow`;
 
 const pipeline = pPipe(addUnicorn, addRainbow);
 
-(async () => {
-	console.log(await pipeline('❤️'));
-	//=> '❤️ Unicorn Rainbow'
-})();
+console.log(await pipeline('❤️'));
+//=> '❤️ Unicorn Rainbow'
 ```
 
 ## API

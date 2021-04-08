@@ -1,6 +1,6 @@
 import test from 'ava';
 import sinon from 'sinon';
-import pPipe from '.';
+import pPipe from './index.js';
 
 const addUnicorn = async string => `${string} Unicorn`;
 const addRainbow = string => Promise.resolve(`${string} Rainbow`);
@@ -38,7 +38,7 @@ test('throws', async t => {
 	};
 
 	const fn = async () => pPipe(whoops)('🧐');
-	await t.throwsAsync(fn, '💔');
+	await t.throwsAsync(fn, {message: '💔'});
 });
 
 test('immediately stops on error', async t => {
@@ -57,7 +57,9 @@ test('immediately stops on error', async t => {
 test('requires at least one input', t => {
 	t.throws(() => {
 		pPipe();
-	}, 'Expected at least one argument');
+	}, {
+		message: 'Expected at least one argument'
+	});
 });
 
 test('reuse pipe', async t => {
